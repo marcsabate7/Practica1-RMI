@@ -7,65 +7,96 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ExamImpl extends UnicastRemoteObject implements StatusClient {
 
     private boolean examStarted = false;
     private boolean examFinished = false;
-    private final HashMap<String, User> users;
-    private ArrayList<String> all_questions;
+    private final HashMap<String, StudentComput> comput;
+    private ArrayList<Question> questions;
     private final HashMap<String, ExamStatusServer> clients;
 
 
-    public ExamImpl(ArrayList<String> questions) throws RemoteException {
-        this.all_questions = questions;
-        this.users = new HashMap<>();
+    public ExamImpl(ArrayList<Question> questions) throws RemoteException {
+        this.questions = questions;
+        this.comput = new HashMap<>();
         this.clients = new HashMap<>();
         this.examStarted = false;
         this.examFinished = false;
     }
 
-
+    //FALTA COMPROBAR QUE NO HI HAGI EL MATEIX IDENTIFICADOR A LA SESSIÓ
     @Override
     public void newSession(String idStudent, ExamStatusServer client) throws RemoteException {
-        if (examStarted == false) {
-            synchronized (users) {
-                users.put(idStudent, new User(idStudent));
+        if (!examStarted) {
+            synchronized (comput) {
+                comput.put(idStudent, new StudentComput());
             }
             synchronized (clients) {
                 clients.put(idStudent, client);
                 System.out.println("New student have been registered to the room:\nTotal: " + clients.size() + " students");
             }
-        }
-        else{
+        } else {
             // Mirar de pasarho al client
             System.out.println("Exam has started, you can't enter to the room!");
         }
     }
 
     @Override
-    public void answerQuestion(String idStudent, Integer answer) throws RemoteException {
+    public void answerQuestion(String idStudent, Integer studentAnswer) throws RemoteException {
+        Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
+        Integer correctAnswer = questions.get(currentQuestion).getAnswer();
+        if (studentAnswer.equals(correctAnswer)) {
+            comput.get(idStudent).nextQuestionCorrect();
+        } else {
+            comput.get(idStudent).nextQuestion();
+        }
 
     }
 
     @Override
     public boolean hasNext(String idStudent) throws RemoteException {
-        User user_session = users.get(idStudent);
-        Integer answer = user_session.getCurrentQuestion();
-        if (examFinished == false && answer < all_questions.size())
-            return true;
-        return false;
+        StudentComput user_session = comput.get(idStudent);
+        Integer question = user_session.getCurrentQuestion();
+        boolean result = !examFinished && question < questions.size() - 1;
+        if (!result)
+            studentEndExam(idStudent);
+        return result;
     }
+
+    private void studentEndExam(String idStudent) throws RemoteException {
+        Integer score = comput.get(idStudent).getCorrectAnswers();
+        clients.get(idStudent).finishExam(score, questions.size());
+    }
+
 
     @Override
     public String next(String idStudent) throws RemoteException {
-        if (hasNext(idStudent)){
-            User user_session = users.get(idStudent);
-            user_session.nextQuestion();
-            Integer question_actual = user_session.getCurrentQuestion();
-            return all_questions.get(question_actual);
+        Integer num_question = 0;
+        if (hasNext(idStudent)) {
+            num_question = comput.get(idStudent).getCurrentQuestion();
+            return questions.get(num_question).getQuestion();
         }
-        throw new
+        return null;
+    }
 
+    public void startExam() throws RemoteException {
+        //pendent d'enviar primera pregunta
+        setExamStarted();
+
+        Set<String> idStudents = clients.keySet();
+        for (String idStudent : idStudents) {
+            clients.get(idStudent).startExam();
+        }
+    }
+
+
+    public void setExamStarted() {
+        this.examStarted = true;
+    }
+
+    public void setExamFinished() {
+        this.examFinished = true;
     }
 }
