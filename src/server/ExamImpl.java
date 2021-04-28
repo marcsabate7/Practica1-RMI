@@ -13,12 +13,12 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     private boolean examStarted = false;
     private boolean examFinished = false;
     private final HashMap<String, User> users;
-    private ArrayList<String> questions;
+    private ArrayList<String> all_questions;
     private final HashMap<String, ExamStatusServer> clients;
 
 
     public ExamImpl(ArrayList<String> questions) throws RemoteException {
-        this.questions = questions;
+        this.all_questions = questions;
         this.users = new HashMap<>();
         this.clients = new HashMap<>();
         this.examStarted = false;
@@ -30,7 +30,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     public void newSession(String idStudent, ExamStatusServer client) throws RemoteException {
         if (examStarted == false) {
             synchronized (users) {
-                users.put(idStudent, new User());
+                users.put(idStudent, new User(idStudent));
             }
             synchronized (clients) {
                 clients.put(idStudent, client);
@@ -51,14 +51,21 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     @Override
     public boolean hasNext(String idStudent) throws RemoteException {
         User user_session = users.get(idStudent);
-        Integer answer = user_session.getActualQuestion();
-        if (examFinished == false)
-            return false;
-        return true;
+        Integer answer = user_session.getCurrentQuestion();
+        if (examFinished == false && answer < all_questions.size())
+            return true;
+        return false;
     }
 
     @Override
     public String next(String idStudent) throws RemoteException {
-        return null;
+        if (hasNext(idStudent)){
+            User user_session = users.get(idStudent);
+            user_session.nextQuestion();
+            Integer question_actual = user_session.getCurrentQuestion();
+            return all_questions.get(question_actual);
+        }
+        throw new
+
     }
 }

@@ -47,7 +47,7 @@ public class server {
         BufferedReader bufferLectura = null;
         ArrayList<String> all_questions = new ArrayList<>();
         try {
-            // Mirar de arreglar manera de ficar el path
+
             bufferLectura = new BufferedReader(new FileReader("src/questions.csv"));
             String linea = bufferLectura.readLine();
 

@@ -4,15 +4,19 @@ import java.util.Objects;
 
 public class User {
     private final Integer correctAnswers;
-    private final Integer actualQuestion;
+    private final Integer currentQuestion;
+    private String idStudent;
 
-    public User(Integer correctAnswers, Integer actualQuestion) {
+    public User(String idStudent, Integer correctAnswers, Integer currentQuestion) {
+        this.idStudent = idStudent;
         this.correctAnswers = correctAnswers;
-        this.actualQuestion = actualQuestion;
+        this.currentQuestion = currentQuestion;
     }
 
-    public User() {
-        this(0, 0);
+    public User(String idStudent) {
+        this.idStudent = idStudent;
+        this.correctAnswers = 0;
+        this.currentQuestion = 0;
     }
 
     public User nextQuestionCorrect() {
@@ -23,7 +27,7 @@ public class User {
         return new User(correctAnswers, actualQuestion + 1);
     }
 
-    public Integer getActualQuestion() {
+    public Integer getCurrentQuestion() {
         return actualQuestion;
     }
 
