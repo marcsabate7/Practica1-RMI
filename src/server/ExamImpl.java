@@ -59,7 +59,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     public boolean hasNext(String idStudent) throws RemoteException {
         StudentComput user_session = comput.get(idStudent);
         Integer question = user_session.getCurrentQuestion();
-        boolean result = !examFinished && question < questions.size() - 1;
+        boolean result = !examFinished && question < questions.size();
         if (!result)
             studentEndExam(idStudent);
         return result;
@@ -83,14 +83,22 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
 
     public void startExam() throws RemoteException {
         //pendent d'enviar primera pregunta
+        System.out.println("S'ha iniciat el examen");
         setExamStarted();
-
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
             clients.get(idStudent).startExam();
         }
     }
 
+    protected void finishExam() throws RemoteException {
+        System.out.println("S'ha finalitzat el examen");
+        setExamFinished();
+        Set<String> idStudents = clients.keySet();
+        for (String idStudent : idStudents) {
+            studentEndExam(idStudent);
+        }
+    }
 
     public void setExamStarted() {
         this.examStarted = true;
