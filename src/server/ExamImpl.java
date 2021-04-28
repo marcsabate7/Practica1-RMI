@@ -37,7 +37,6 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
                 clients.put(idStudent, client);
                 System.out.println("---------------------------------------------");
                 System.out.println("New student have been registered to the room!\nTotal students: " + clients.size());
-                System.out.println("---------------------------------------------");
             }
         } else {
             // Mirar de pasarho al client
@@ -81,7 +80,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         return result;
     }
 
-    private void studentEndExam(String idStudent) throws RemoteException {
+    public void studentEndExam(String idStudent) throws RemoteException {
         Integer score = comput.get(idStudent).getCorrectAnswers();
         clients.get(idStudent).finishExam(score, questions.size());
     }
@@ -98,7 +97,6 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     }
 
     public void startExam() throws RemoteException {
-        //pendent d'enviar primera pregunta
         System.out.println("Exam started!");
         setExamStarted();
         Set<String> idStudents = clients.keySet();
