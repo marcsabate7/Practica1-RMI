@@ -12,30 +12,26 @@ import java.util.Arrays;
 
 public class server {
 
-    private static ArrayList<String> questions;
+    private static ArrayList<Question> questions;
     public static final String SEPARADOR = ";";
 
-    private static Registry startRegistry(Integer port)
-            throws RemoteException {
-        if(port == null) {
-            port = 1099;
-        }
+    private static Registry startRegistry(Integer port) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(port);
-            registry.list( );
+            registry.list();
 
             return registry;
-        }
-        catch (RemoteException ex) {
+        } catch (RemoteException ex) {
             // No valid registry at that port.
             System.out.println("RMI registry cannot be located ");
-            Registry registry= LocateRegistry.createRegistry(port);
+            Registry registry = LocateRegistry.createRegistry(port);
             System.out.println("RMI registry created at port ");
             return registry;
         }
     }
+
     public static void main(String args[]) throws IOException, AlreadyBoundException {
-        Registry registry = startRegistry(null);
+        Registry registry = startRegistry(1099);
         questions = readQuestions();
         ExamImpl obj = new ExamImpl(questions);
         registry.bind("Hello", obj);
@@ -43,36 +39,31 @@ public class server {
 
     }
 
-    private static ArrayList<String> readQuestions() throws IOException {
+    private static ArrayList<Question> readQuestions() throws IOException {
         BufferedReader bufferLectura = null;
-        ArrayList<String> all_questions = new ArrayList<>();
+        ArrayList<Question> all_questions = new ArrayList<>();
         try {
-
+            // Mirar de arreglar manera de ficar el path
             bufferLectura = new BufferedReader(new FileReader("src/questions.csv"));
             String linea = bufferLectura.readLine();
 
             while (linea != null) {
                 String[] campos = linea.split(SEPARADOR);
+                all_questions.add(new Question(campos[0],campos[campos.length-1]));
 
                 System.out.println(Arrays.toString(campos));
-
                 linea = bufferLectura.readLine();
 
-                all_questions.add(Arrays.toString(campos));
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
             //e.printStackTrace();
-        }
-
-        finally {
+        } finally {
 
             if (bufferLectura != null) {
                 try {
                     bufferLectura.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
