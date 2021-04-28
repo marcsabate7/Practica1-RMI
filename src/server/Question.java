@@ -24,5 +24,12 @@ public class Question {
     public List<String> getPossibleAnswers() {
         return this.possible_answers;
     }
+    public String presentPossibleAnswers() {
+        String presentation = this.question[0];
+        for (int i = 0; i < possible_answers.size(); i++) {
+            presentation+=("\n" + "\t"+(i+1)+". " +possible_answers.get(i));
+        }
+        return presentation;
+    }
 }
 

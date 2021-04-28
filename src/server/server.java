@@ -45,6 +45,7 @@ public class server {
         ExamImpl obj = new ExamImpl(questions);
         registry.bind("Hello", obj);
         System.out.println("Server ready!!");
+        System.out.println("\n");
         startExam(obj);
         finishExam(obj);
         outputExam(obj,args[1]);
@@ -83,13 +84,6 @@ public class server {
     // IMPLEMENTAR
     private static void outputExam(ExamImpl obj, String filename) {
         System.out.println("Saving students result to the output file...");
-        try{
-            CSVWriter writer = new CSVWriter(new FileWriter(archCSV));
-
-        }
-        catch{
-
-        }
     }
 
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
@@ -99,7 +93,7 @@ public class server {
             // Mirar de arreglar manera de ficar el path
             bufferLectura = new BufferedReader(new FileReader("src/"+namefile+".csv"));
             String linea = bufferLectura.readLine();
-            System.out.println("Reading CSV file...");
+            System.out.println("Reading " +namefile+".csv file...");
             while (linea != null) {
                 List<String> possible_responses = new ArrayList<>();
                 String[] campos = linea.split(SEPARADOR);

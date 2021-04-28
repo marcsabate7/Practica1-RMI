@@ -35,7 +35,9 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
             }
             synchronized (clients) {
                 clients.put(idStudent, client);
-                System.out.println("New student have been registered to the room:\nTotal: " + clients.size() + " students");
+                System.out.println("---------------------------------------------");
+                System.out.println("New student have been registered to the room!\nTotal students: " + clients.size());
+                System.out.println("---------------------------------------------");
             }
         } else {
             // Mirar de pasarho al client
@@ -45,6 +47,21 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
 
     @Override
     public void answerQuestion(String idStudent, Integer studentAnswer) throws RemoteException {
+        /*Integer student_answer2=0;
+        Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
+        try{
+            student_answer2 = Integer.parseInt(studentAnswer);
+            Integer correctAnswer = questions.get(currentQuestion).getAnswer();
+            if (student_answer2.equals(correctAnswer)) {
+                comput.get(idStudent).nextQuestionCorrect();
+            } else {
+                comput.get(idStudent).nextQuestion();
+            }
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }*/
+
         Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
         Integer correctAnswer = questions.get(currentQuestion).getAnswer();
         if (studentAnswer.equals(correctAnswer)) {
@@ -52,7 +69,6 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         } else {
             comput.get(idStudent).nextQuestion();
         }
-
     }
 
     @Override
@@ -76,14 +92,14 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         Integer num_question = 0;
         if (hasNext(idStudent)) {
             num_question = comput.get(idStudent).getCurrentQuestion();
-            return questions.get(num_question).getQuestion();
+            return questions.get(num_question).presentPossibleAnswers();
         }
         return null;
     }
 
     public void startExam() throws RemoteException {
         //pendent d'enviar primera pregunta
-        System.out.println("S'ha iniciat el examen");
+        System.out.println("Exam started!");
         setExamStarted();
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {
