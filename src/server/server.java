@@ -84,13 +84,15 @@ public class server {
     // IMPLEMENTAR
     private static void outputExam(ExamImpl obj, String filename) {
         System.out.println("Saving students score to the output file...");
+        File csvFile = new File(filename);
+
     }
 
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
         BufferedReader bufferLectura = null;
         ArrayList<Question> all_questions = new ArrayList<>();
         try {
-            // Mirar de arreglar manera de ficar el path
+
             bufferLectura = new BufferedReader(new FileReader("src/"+namefile+".csv"));
             String linea = bufferLectura.readLine();
             System.out.println("Reading " +namefile+".csv file...");
