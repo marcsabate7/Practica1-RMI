@@ -7,7 +7,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class ExamImpl extends UnicastRemoteObject implements StatusClient {
 
@@ -113,6 +115,12 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         for (String idStudent : idStudents) {
             studentEndExam(idStudent);
         }
+    }
+    protected int getNumQuestions(){
+        return questions.size();
+    }
+    protected Stream<Map.Entry<String, StudentComput>> getResults() {
+        return this.comput.entrySet().stream();
     }
 
     public void setExamStarted() {

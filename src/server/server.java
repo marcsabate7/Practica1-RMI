@@ -81,11 +81,27 @@ public class server {
         }
 
     }
-    // IMPLEMENTAR
-    private static void outputExam(ExamImpl obj, String filename) {
+    // Acabar de mirar i fixejar
+    private static void outputExam(ExamImpl obj, String filename) throws FileNotFoundException {
         System.out.println("Saving students score to the output file...");
-        File csvFile = new File(filename);
+        try {
+            File csvFile = new File(filename);
+            PrintWriter out = new PrintWriter(csvFile+".csv");
+            String column_names = "Student ID, Total questions, Correct answers, Score";
+            Integer total_questions = obj.getNumQuestions();
+            out.println(column_names);
 
+            obj.getResults().forEach((pair) -> {
+                Integer correctAnswers = pair.getValue().getCorrectAnswers();
+                out.println(pair.getKey() +
+                        "; " + correctAnswers.toString() +
+                        "; " + total_questions +
+                        "; " + 10 * correctAnswers / (double) total_questions);
+            });
+            System.out.println("The output file has been generated succesfully, check the scores now on "+csvFile+".csv!");
+        }catch(Exception e){
+            System.err.println("An exception occurrred when generating CSV file");
+        }
     }
 
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
