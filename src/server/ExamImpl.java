@@ -29,38 +29,39 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     //FALTA COMPROBAR QUE NO HI HAGI EL MATEIX IDENTIFICADOR A LA SESSIÓ
     @Override
     public void newSession(String idStudent, ExamStatusServer client) throws RemoteException {
-        if (!examStarted) {
-            synchronized (comput) {
-                comput.put(idStudent, new StudentComput());
-            }
-            synchronized (clients) {
-                clients.put(idStudent, client);
-                System.out.println("---------------------------------------------");
-                System.out.println("New student have been registered to the room!\nTotal students: " + clients.size());
-            }
-        } else {
-            // Mirar de pasarho al client
-            System.out.println("Exam has started, you can't enter to the room!");
+        boolean exist = false;
+        Set<String> idStudents = clients.keySet();
+
+        if(examStarted){
+            System.err.println("Student with ID: "+idStudent+" is trying to enter when the exam was started, denying access...");
+            client.examHasStarted("The exam has started!");
         }
+        else {
+            for (String idSt : idStudents) {
+                if (idSt.equals(idStudent)) {
+                    System.err.println("\nAn student is trying to enter with the ID from another");
+                    client.sameUser("This user is already registered to the exam, try another one...");
+                    exist = true;
+                }
+            }
+        }
+        if (exist == false) {
+            if (!examStarted) {
+                synchronized (comput) {
+                    comput.put(idStudent, new StudentComput());
+                }
+                synchronized (clients) {
+                    clients.put(idStudent, client);
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("New student with ID: " + idStudent + ", have been entered to the exam!\nTotal students: " + clients.size());
+                }
+            }
+        }
+
     }
 
     @Override
     public void answerQuestion(String idStudent, Integer studentAnswer) throws RemoteException {
-        /*Integer student_answer2=0;
-        Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
-        try{
-            student_answer2 = Integer.parseInt(studentAnswer);
-            Integer correctAnswer = questions.get(currentQuestion).getAnswer();
-            if (student_answer2.equals(correctAnswer)) {
-                comput.get(idStudent).nextQuestionCorrect();
-            } else {
-                comput.get(idStudent).nextQuestion();
-            }
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }*/
-
         Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
         Integer correctAnswer = questions.get(currentQuestion).getAnswer();
         if (studentAnswer.equals(correctAnswer)) {
@@ -106,7 +107,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     }
 
     protected void finishExam() throws RemoteException {
-        System.out.println("S'ha finalitzat el examen");
+        System.out.println("Exam finished!");
         setExamFinished();
         Set<String> idStudents = clients.keySet();
         for (String idStudent : idStudents) {

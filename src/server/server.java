@@ -83,7 +83,7 @@ public class server {
     }
     // IMPLEMENTAR
     private static void outputExam(ExamImpl obj, String filename) {
-        System.out.println("Saving students result to the output file...");
+        System.out.println("Saving students score to the output file...");
     }
 
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
