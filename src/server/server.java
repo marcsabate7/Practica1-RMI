@@ -87,18 +87,18 @@ public class server {
         try {
             File csvFile = new File(filename);
             PrintWriter out = new PrintWriter(csvFile+".csv");
-            String column_names = "Student ID, Total questions, Correct answers, Score";
+            String column_names = "Student ID; Total questions; Correct answers; Score";
             Integer total_questions = obj.getNumQuestions();
             out.println(column_names);
-
             obj.getResults().forEach((pair) -> {
                 Integer correctAnswers = pair.getValue().getCorrectAnswers();
                 out.println(pair.getKey() +
-                        "; " + correctAnswers.toString() +
                         "; " + total_questions +
+                        "; " + correctAnswers.toString() +
                         "; " + 10 * correctAnswers / (double) total_questions);
             });
             System.out.println("The output file has been generated succesfully, check the scores now on "+csvFile+".csv!");
+            out.close();
         }catch(Exception e){
             System.err.println("An exception occurrred when generating CSV file");
         }

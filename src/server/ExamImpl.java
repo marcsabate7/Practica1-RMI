@@ -35,7 +35,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         Set<String> idStudents = clients.keySet();
 
         if(examStarted){
-            System.err.println("Student with ID: "+idStudent+" is trying to enter when the exam was started, denying access...");
+            System.err.println("\nStudent with ID: "+idStudent+" is trying to enter when the exam was started, denying access...");
             client.examHasStarted("The exam has started!");
         }
         else {
