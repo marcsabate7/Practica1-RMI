@@ -66,10 +66,15 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
     public void answerQuestion(String idStudent, Integer studentAnswer) throws RemoteException {
         Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
         Integer correctAnswer = questions.get(currentQuestion).getAnswer();
-        if (studentAnswer.equals(correctAnswer)) {
-            comput.get(idStudent).nextQuestionCorrect();
-        } else {
-            comput.get(idStudent).nextQuestion();
+        if(studentAnswer == 999999999){
+            comput.get(idStudent).nextToFinish();
+        }
+        else {
+            if (studentAnswer.equals(correctAnswer)) {
+                comput.get(idStudent).nextQuestionCorrect();
+            } else {
+                comput.get(idStudent).nextQuestion();
+            }
         }
     }
 
