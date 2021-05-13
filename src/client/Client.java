@@ -38,7 +38,10 @@ public class Client {
     }
 
     private static void finishExam() {
-        System.out.println("\nThe exam has finished, you have a total score of " + exam_status_impl.getCorrectAnswers() + "/" + exam_status_impl.getTotalQuestions());
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.println("\nTIME OVER, THE EXAM HAS FINISHED!!");
+        Float score_exact = ((float) 10 *(float)exam_status_impl.getCorrectAnswers())/(float)exam_status_impl.getTotalQuestions();
+        System.out.println("\nYou have a total score of " + exam_status_impl.getCorrectAnswers() + "/" + exam_status_impl.getTotalQuestions() +" --> " +score_exact);
         System.exit(1);
     }
 
@@ -142,18 +145,4 @@ public class Client {
 
         status_client.answerQuestion(idStudent, retorn);
     }
-
 }
-
-
-/*while(number == null){
-            try {
-                //System.out.println("HOLA");
-                Scanner scanner = new Scanner(System.in);
-                number = scanner.nextInt();
-
-            } catch (Exception e) {}
-            if(number == null){
-                System.err.println("\nThe answer have to be a number!!");
-            }
-        }*/
