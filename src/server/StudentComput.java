@@ -16,6 +16,9 @@ public class StudentComput {
         this.correctAnswers = 0;
         this.currentQuestion = 0;
     }
+    public void nextToFinish(){
+
+    }
 
     public void nextQuestionCorrect() {
         this.correctAnswers += 1;
