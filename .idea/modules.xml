@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/Practica1RMI.iml" filepath="$PROJECT_DIR$/Practica1RMI.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/Practica1RMI-client.iml" filepath="$PROJECT_DIR$/Practica1RMI-client.iml" />
+>>>>>>> 3c3551e9620eafb273c323b60b1968abeddb5b66
     </modules>
   </component>
 </project>
