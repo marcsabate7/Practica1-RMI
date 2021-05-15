@@ -102,6 +102,7 @@ public class server {
         }catch(Exception e){
             System.err.println("An exception occurrred when generating CSV file");
         }
+
     }
 
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
