@@ -14,4 +14,6 @@
 
 
 <h3 align="left">DSS Sequence Diagram </h3>
-![79d0c761-4fd0-481e-9067-e817586a09aa](https://user-images.githubusercontent.com/64595179/118397217-49b3e800-b653-11eb-879b-8a60b49b624f.jpg)
+
+![79d0c761-4fd0-481e-9067-e817586a09aa](https://user-images.githubusercontent.com/64595179/118397249-68b27a00-b653-11eb-9fda-825e13c1900a.jpg)
+
