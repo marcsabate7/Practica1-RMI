@@ -1,3 +1,10 @@
+/*
+*
+*   We control the comprovations of the student with this class, if the exam has finished / started etc.
+*
+* */
+
+
 package client;
 
 import common.ExamStatusServer;

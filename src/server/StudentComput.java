@@ -1,3 +1,9 @@
+/*
+*
+*   We have the comput of the exam in this class, how many questions correct has and all the pertintent information from the exam of the student
+*
+* */
+
 package server;
 
 

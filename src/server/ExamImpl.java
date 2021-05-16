@@ -28,7 +28,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         this.examFinished = false;
     }
 
-    //FALTA COMPROBAR QUE NO HI HAGI EL MATEIX IDENTIFICADOR A LA SESSIÓ
+    // We also comprove a student no enter to the exam with the ID from an other or an existing ID
     @Override
     public void newSession(String idStudent, ExamStatusServer client) throws RemoteException {
         boolean exist = false;
@@ -62,6 +62,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
 
     }
 
+    // Comproving answers from the students and calculing their score
     @Override
     public void answerQuestion(String idStudent, Integer studentAnswer) throws RemoteException {
         Integer currentQuestion = comput.get(idStudent).getCurrentQuestion();
@@ -78,6 +79,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         }
     }
 
+    // If student exam has more questions
     @Override
     public boolean hasNext(String idStudent) throws RemoteException {
         StudentComput user_session = comput.get(idStudent);
@@ -88,12 +90,13 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         return result;
     }
 
+
     public void studentEndExam(String idStudent) throws RemoteException {
         Integer score = comput.get(idStudent).getCorrectAnswers();
         clients.get(idStudent).finishExam(score, questions.size());
     }
 
-
+    // Next question
     @Override
     public String next(String idStudent) throws RemoteException {
         Integer num_question = 0;
@@ -104,6 +107,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         return null;
     }
 
+    // Starting exam
     public void startExam() throws RemoteException {
         System.out.println("Exam started!");
         setExamStarted();
@@ -113,6 +117,7 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
         }
     }
 
+    // Finishing exam
     protected void finishExam() throws RemoteException {
         System.out.println("Exam finished!");
         setExamFinished();
@@ -121,6 +126,9 @@ public class ExamImpl extends UnicastRemoteObject implements StatusClient {
             studentEndExam(idStudent);
         }
     }
+
+    // Getters & Setters
+
     protected int getNumQuestions(){
         return questions.size();
     }

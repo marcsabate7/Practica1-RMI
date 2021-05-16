@@ -1,3 +1,9 @@
+/*
+*
+*   With this class we return and control all the parameters from a certain question as the possible answers and the correct answer
+*
+* */
+
 package server;
 
 import java.util.ArrayList;

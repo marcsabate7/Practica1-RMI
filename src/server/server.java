@@ -32,7 +32,9 @@ public class server {
         }
     }
 
+
     public static void main(String args[]) throws IOException, AlreadyBoundException, InterruptedException {
+        // Comproving that the student enter the correct parameters to run the server with different options that we offer
         if (args.length != 2) {
             System.out.println("---------------------------------------------------------");
             System.out.println("Please pass two arguments: <inputFile> <outputFile>\n");
@@ -50,6 +52,8 @@ public class server {
         finishExam(obj);
         outputExam(obj,args[1]);
     }
+
+    // Keywords to start and finish the exam
 
     private static void startExam(ExamImpl obj) throws IOException {
         boolean correct_answer = false;
@@ -81,7 +85,8 @@ public class server {
         }
 
     }
-    // Acabar de mirar i fixejar
+
+    // Exam output with the result from all the students that are in the exam with CSV format
     private static void outputExam(ExamImpl obj, String filename) throws FileNotFoundException {
         System.out.println("Saving students score to the output file...");
         try {
@@ -105,6 +110,7 @@ public class server {
 
     }
 
+    // Reading questions from the respective input file that the user decide
     private static ArrayList<Question> readQuestions(String namefile) throws IOException {
         BufferedReader bufferLectura = null;
         ArrayList<Question> all_questions = new ArrayList<>();

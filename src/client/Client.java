@@ -37,6 +37,7 @@ public class Client {
         }
     }
 
+    // Function to be executed when the user finish the exam or the professor say that the exam has finished
     private static void finishExam() {
         System.out.println("\n-----------------------------------------------------------");
         System.out.println("\nTIME OVER, THE EXAM HAS FINISHED!!");
@@ -45,6 +46,8 @@ public class Client {
         System.exit(1);
     }
 
+
+    // When the exam start we have to complete this fields and pass them to enter to the exam room
     private static String startExam(StatusClient status_client, ExamStatusImpl exam_status_impl) throws IOException, InterruptedException {
         String idstudent;
         boolean sortir_totalment = false;
@@ -76,6 +79,7 @@ public class Client {
         return null;
     }
 
+    // Looping from all the exam questions and waiting the user from respond or exam finished by the professor
     private static void answerExam(StatusClient status_client, ExamStatusImpl exam_status_impl, String idStudent) throws RemoteException, InterruptedException {
         System.out.println("\nWelcome " + idStudent + ", the exam has started!!");
         Integer cont_questions = 0;
@@ -85,6 +89,7 @@ public class Client {
         }
     }
 
+    // This thread class is used question by question to wait from the student response
     public static class MyThread implements Runnable {
         private  String name;
         Integer number;
@@ -118,6 +123,7 @@ public class Client {
     }
 
 
+    // Student recive the question and the separate thread is created to read from the keyboard and this main thread to loop and comproving if the exam has finished or the student have response the question
     private static void questionAnswer(StatusClient status_client, String idStudent,Integer cont_questions) throws RemoteException, InterruptedException {
         String question = status_client.next(idStudent);
         System.out.println("\nQUESTION "+cont_questions+": ");
