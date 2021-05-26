@@ -116,7 +116,7 @@ public class server {
         ArrayList<Question> all_questions = new ArrayList<>();
         try {
 
-            bufferLectura = new BufferedReader(new FileReader("src/"+namefile+".csv"));
+            bufferLectura = new BufferedReader(new FileReader("Practica1-RMI/src/"+namefile+".csv"));
             String linea = bufferLectura.readLine();
             System.out.println("Reading " +namefile+".csv file...");
             while (linea != null) {
