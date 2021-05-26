@@ -43,7 +43,7 @@ public class Client {
         System.out.println("\nTIME OVER, THE EXAM HAS FINISHED!!");
         Float score_exact = ((float) 10 *(float)exam_status_impl.getCorrectAnswers())/(float)exam_status_impl.getTotalQuestions();
         System.out.println("\nYou have a total score of " + exam_status_impl.getCorrectAnswers() + "/" + exam_status_impl.getTotalQuestions() +" --> " +score_exact);
-        System.exit(1);
+        //System.exit(1);
     }
 
 
